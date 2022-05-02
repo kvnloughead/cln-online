@@ -23,23 +23,23 @@ class CommandLine extends LitElement {
     }
 
     label {
-      font-size: calc(10px + 2vmin);
+      font-size: calc(10px + 1vmin);
       vertical-align: baseline;
     }
 
     input {
       flex-grow: 1;
       padding: 6px 10px;
-      font-size: calc(10px + 2vmin);
+      font-size: calc(10px + 1vmin);
       font-family: monospace;
-      height: calc(10px + 2vmin);
+      height: calc(10px + 1vmin);
       background-color: lightgrey;
       vertical-align: baseline;
       border: none;
     }
 
     input::placeholder {
-      font-size: calc(10px + 2vmin);
+      font-size: calc(10px + 1vmin);
     }
   `;
 

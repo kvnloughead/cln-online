@@ -26,7 +26,7 @@ class ToolBar extends LitElement {
 
     button {
       font-family: monospace;
-      font-size: calc(10px + 2vmin);
+      font-size: calc(10px + 1vmin);
       padding: 6px 10px;
     }
 

@@ -1,0 +1,19 @@
+code-input {
+  resize: both;
+  margin: 200px 0 50px;
+  display: flex;
+  width: 1080px;
+  gap: 60px;
+}
+
+code-input pre[class*='language-'] {
+  width: 50%;
+  min-height: 600px;
+  border: 1px solid rgb(118, 118, 118);
+  margin: 0;
+}
+
+code-input textarea {
+  width: 50%;
+  padding: 1em; /* to match pre[class*=*language-'] */
+}
