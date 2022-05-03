@@ -1,11 +1,11 @@
 import { LitElement, html, css } from 'lit';
-import { property } from 'lit/decorators.js';
+import { eventOptions, property } from 'lit/decorators.js';
 
 import './components/ToolBar.js';
 import './components/CommandLine.js';
 
 export class ClnOnline extends LitElement {
-  @property({ type: String }) title = '$ cln';
+  @property({ type: String }) content = '# Default markdown';
 
   static styles = css`
     :host {
@@ -39,6 +39,13 @@ export class ClnOnline extends LitElement {
     main {
       display: flex;
       justify-content: center;
+      align-items: flex-start;
+      gap: 60px;
+      min-width: 1280px;
+    }
+
+    .code-input-wrapper {
+      position: relative;
     }
   `;
 
@@ -47,28 +54,64 @@ export class ClnOnline extends LitElement {
     toolbar?.toggleAttribute('isVisible');
   }
 
-  // _updateMarkdown() {
-  //   // Updates the markdown in zero-md by directly manipulating the fall-back
-  //   // text inside the <script> tag.
-  //   // TODO - make it work by updating `src` attribute from a file
-  //   const { value } = this.renderRoot.querySelector(
-  //     '#md-editor'
-  //   ) as HTMLTextAreaElement;
-  //   const viewer = this.renderRoot
-  //     .querySelector('#md-viewer')
-  //     ?.querySelector('script') as HTMLScriptElement;
-  //   viewer.textContent = value;
-  // }
+  protected firstUpdated(): void {
+    const textarea = this.renderRoot.querySelector('textarea');
+    textarea?.addEventListener('input', () => {
+      this._updateViewer(textarea.value);
+    });
+  }
+
+  @eventOptions({ capture: true })
+  _updateViewer(value: string) {
+    const viewer = this.renderRoot
+      .querySelector('#md-viewer')
+      ?.querySelector('script') as HTMLScriptElement;
+    viewer.textContent = value;
+  }
 
   render() {
     return html`
       <header>
-        <command-line title=${this.title}></command-line>
+        <command-line></command-line>
         <tool-bar></tool-bar>
       </header>
 
       <main>
-        <slot name="code-input"></slot>
+        <!-- <code-input> and its things. Can't link the files in index.html -->
+        <code-input
+          @oninput=${this._updateViewer}
+          lang="Markdown"
+          placeholder="Enter some markdown"
+          value=${this.content}
+        >
+        </code-input>
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/WebCoder49/code-input@1.0/code-input.css"
+        />
+        <link
+          id="import-theme"
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism.css"
+        />
+        <link rel="stylesheet" href="./src/css/code-input-local.css" />
+
+        <zero-md id="md-viewer">
+          <!-- without data-merge, the default styles will be omitted -->
+          <template data-merge="append">
+            <style>
+              :host {
+                min-height: 600px;
+                width: 35vw;
+                margin-top: 200px;
+              }
+            </style>
+          </template>
+          <!-- without data-dedent the default will be read as a code block -->
+          <script type="text/markdown" data-dedent>
+            ${this.content}
+          </script>
+        </zero-md>
       </main>
     `;
   }

@@ -3,12 +3,6 @@ import { customElement } from 'lit/decorators.js';
 
 @customElement('command-line')
 class CommandLine extends LitElement {
-  static get properties() {
-    return {
-      title: { type: String },
-    };
-  }
-
   static styles = css`
     :host {
       width: 50%;
@@ -46,7 +40,7 @@ class CommandLine extends LitElement {
   render() {
     return html`
       <form action="">
-        <label for="subcommand">${this.title}</label>
+        <label for="subcommand">$ cln</label>
         <input
           type="text"
           id="subcommand"
